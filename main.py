@@ -1,6 +1,6 @@
 import os
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 from analiza import analiza_companie
 
 TOKEN = os.getenv("TELEGRAM_TOKEN")
@@ -17,8 +17,7 @@ def main():
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", start))
-    app.add_handler(CommandHandler(None, handle_symbol))
-    app.add_handler(CommandHandler("", handle_symbol))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_symbol))
     app.run_polling()
 
 if __name__ == "__main__":
